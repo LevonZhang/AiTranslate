@@ -1,5 +1,5 @@
 // api/translate.js
-export default async function handlerhandler(req, res) {
+export async function POST(req, res) {
     try {
       const MODEL_NAME = "gemini-1.5-pro-latest";
       // 使用 dynamic import() 导入 Google Generative AI
