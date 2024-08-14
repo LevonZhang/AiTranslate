@@ -8,6 +8,9 @@ export async function POST(req, res) {
       // 初始化 Google Gemini API 客户端
       const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
+      // 从请求体中获取 texts 和 target_language
+      const { texts, target_language } = req.body; 
+
       let sys_prompt = `Translate the following texts to {target_language}, paying close attention to the context and ensuring accuracy. Double-check for any potentially ambiguous words or phrases and choose the most appropriate translation. 
                         **Examples of potential ambiguities:**
                         - If the word "charge" refers to billing, ensure it is not translated as "charging" (as in electricity).
@@ -50,9 +53,7 @@ export async function POST(req, res) {
         generationConfig: generationConfig,
       });  
     
-      // 获取用户输入的领域需求描述
-      const requestText = req.body.texts;
-      const result = await model.generateContent(requestText);  
+      const result = await model.generateContent(texts);  
 
       if(result.response.promptFeedback && result.response.promptFeedback.blockReason) {   
         return { error: `Blocked for ${result.response.promptFeedback.blockReason}` };
