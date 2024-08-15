@@ -59,9 +59,14 @@ export async function POST(req, res) {
         return { error: `Blocked for ${result.response.promptFeedback.blockReason}` };
       }
       let text = result.response.text();
-      res.send(200, JSON.parse(text));
+      return new Response(JSON.stringify(JSON.parse(text)), { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        } 
+      });
     } catch (error) {
       console.error("Error translate:", error);
-      res.send(500, "Error translate"); 
+      return new Response("Error translate", { status: 500 }); 
     }
   };
