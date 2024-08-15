@@ -3,7 +3,7 @@ module.exports = async (req, res) => {
     try {
       const MODEL_NAME = "gemini-1.5-pro-latest";
       // 使用 dynamic import() 导入 Google Generative AI
-      const { GoogleGenerativeAI, Schema } = await import('@google/generative-ai');
+      const { GoogleGenerativeAI, FunctionDeclarationSchemaType } = await import('@google/generative-ai');
   
       // 初始化 Google Gemini API 客户端
       const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
@@ -23,15 +23,15 @@ module.exports = async (req, res) => {
 
       const schema = {
         description: "Objects containing index and translated text",
-        type: Schema.OBJECT,
+        type: FunctionDeclarationSchemaType.OBJECT,
         properties: {
           index: {
-            type: Schema.STRING,
+            type: FunctionDeclarationSchemaType.STRING,
             description: "Index of translated text",
             nullable: false,
           },
           translation: {
-            type: Schema.STRING,
+            type: FunctionDeclarationSchemaType.STRING,
             description: "Translated text",
             nullable: false,
           },
