@@ -1,9 +1,10 @@
 // api/translate.js
-export async function POST(req, res) {
+module.exports = async (req, res) => {
     try {
       const MODEL_NAME = "gemini-1.5-pro-latest";
       // 使用 dynamic import() 导入 Google Generative AI
-      const { GoogleGenerativeAI, FunctionDeclarationSchemaType} = await import('@google/generative-ai');
+      const { GoogleGenerativeAI } = await import('@google/generative-ai');
+      const { Schema } = await import('@google/generative-ai');
   
       // 初始化 Google Gemini API 客户端
       const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
@@ -23,15 +24,15 @@ export async function POST(req, res) {
 
       const schema = {
         description: "Objects containing index and translated text",
-        type: FunctionDeclarationSchemaType.OBJECT,
+        type: Schema.FunctionDeclarationSchemaType.OBJECT,
         properties: {
           index: {
-            type: FunctionDeclarationSchemaType.STRING,
+            type: Schema.FunctionDeclarationSchemaType.STRING,
             description: "Index of translated text",
             nullable: false,
           },
           translation: {
-            type: FunctionDeclarationSchemaType.STRING,
+            type: Schema.FunctionDeclarationSchemaType.STRING,
             description: "Translated text",
             nullable: false,
           },
@@ -59,14 +60,9 @@ export async function POST(req, res) {
         return { error: `Blocked for ${result.response.promptFeedback.blockReason}` };
       }
       let text = result.response.text();
-      return new Response(JSON.stringify(JSON.parse(text)), { 
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json'
-        } 
-      });
+      res.status(200).json(JSON.parse(text));
     } catch (error) {
       console.error("Error translate:", error);
-      return new Response("Error translate", { status: 500 }); 
+      res.status(500).sen("Error translate"); 
     }
   };
