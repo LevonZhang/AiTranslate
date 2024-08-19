@@ -23,7 +23,7 @@ module.exports = async (req, res) => {
 
       const schema = {
         description: "Objects containing index and translated text",
-        type: "STRING",
+        type: "OBJECT",
         properties: {
           index: {
             type: "STRING",
