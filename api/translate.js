@@ -3,7 +3,7 @@ module.exports = async (req, res) => {
     try {
       const MODEL_NAME = "gemini-1.5-pro-latest";
       // 使用 dynamic import() 导入 Google Generative AI
-      const { GoogleGenerativeAI, FunctionDeclarationSchemaType } = await import('@google/generative-ai');
+      const { GoogleGenerativeAI, FunctionDeclarationSchemaType } = require('@google/generative-ai');
   
       // 初始化 Google Gemini API 客户端
       const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
@@ -59,9 +59,9 @@ module.exports = async (req, res) => {
         return { error: `Blocked for ${result.response.promptFeedback.blockReason}` };
       }
       let text = result.response.text();
-      res.status(200).json(JSON.parse(text));
+      res.send(200, JSON.parse(text));
     } catch (error) {
       console.error("Error translate:", error);
-      res.status(500).sen("Error translate"); 
+      res.send(500, "Error translate");  
     }
   };
